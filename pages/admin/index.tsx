@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { withPageAuthRequired, UserProfile } from '@auth0/nextjs-auth0'
 import Page from '@components/Page'
-import { Card, Box } from '@mui/material'
+import { Box, Button, Card, Typography } from '@mui/material'
 
 interface PageProps {
 	user: UserProfile
@@ -17,7 +17,8 @@ const Home: NextPage<PageProps> = ({ user }: PageProps) => {
 		<Page user={user}>
 			<Card>
 				<Box padding={2}>
-					/
+					<Typography variant="h4">Admin Settings</Typography>
+					<Button href="/admin/shell">Open Shell</Button>
 				</Box>
 			</Card>
 		</Page>
