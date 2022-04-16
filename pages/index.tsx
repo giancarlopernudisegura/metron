@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 
 const Home: NextPage = () => {
 	return (
@@ -9,5 +10,7 @@ const Home: NextPage = () => {
 		</Head>
 	)
 }
+
+export const getServerSideProps = withPageAuthRequired()
 
 export default Home
