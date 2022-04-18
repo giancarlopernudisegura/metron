@@ -1,6 +1,6 @@
 import { UserProfile, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import Page from '@components/Page'
-import { Box, Card, Skeleton, Typography } from '@mui/material'
+import { Box, Button, Card, Divider, Skeleton, Stack, Typography } from '@mui/material'
 import { Assignment } from '@prisma/client'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -32,8 +32,13 @@ const AssignmentPage: NextPage<PageProps> = ({ user }: PageProps) => {
 			<Card>
 				<Box padding={2}>
 					<Typography variant='h4'>{assignment?.name || <Skeleton />}</Typography>
-					<Typography variant='h5'>{assignment?.dateDue.toString() || <Skeleton />}</Typography>
+					<Typography variant='h6'>{assignment ? `Due: ${assignment?.dateDue.toString()}` : <Skeleton />}</Typography>
+					<Divider variant="middle" />
 					<Typography variant='body1'>{assignment?.description || <Skeleton />}</Typography>
+					<Stack direction='row' justifyContent='flex-end' spacing={1}>
+						<Button variant='outlined'>Submit a test case</Button>
+						<Button variant='contained'>Run a solution</Button>
+					</Stack>
 				</Box>
 			</Card>
 		</Page>
