@@ -1,12 +1,13 @@
 import Prisma from '@library/prisma'
 import { Assignment } from '.prisma/client/index'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
 type Error = {
 	message: string
 }
 
-export default async function handler(
+export default withApiAuthRequired(async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Assignment | Error>
 ) {
@@ -16,4 +17,4 @@ export default async function handler(
 		res.status(200).json(assignment)
 	else
 		res.status(404).json({ message: 'Assignment not found'})
-}
+})
