@@ -11,5 +11,74 @@ datasource db {
 }
 
 model Class {
-	id String @id @default(cuid())
+	id                  String              @id @default(cuid())
+	name                String              @unique @default("")
+	assignments         Assignment[]
+
+	@@index(name)
+}
+
+model User {
+	email               String              @id
+	isTA                Boolean             @default(false)
+	assignments         Assignment[]
+	TA                  TeachingAssistant[]
+	solutions           Solution[]
+}
+
+model Assignment {
+	id                  String              @id @default(cuid())
+	course              Class               @relation(fields: [courseId], references: [id])
+	name                String
+	description         String
+	instructor          User                @relation(fields: [instructorEmail], references: [email])
+	dateDue             DateTime            @default(now())
+	TAEmails            TeachingAssistant[]
+	testCases           TestCase[]
+	solutions           Solution[]
+
+	courseId            String
+	instructorEmail     String
+
+	@@index(instructorEmail)
+}
+
+model TeachingAssistant {
+	user                User                @relation(fields: [userEmail], references: [email])
+	assignment          Assignment          @relation(fields: [assignmentId], references: [id])
+
+	userEmail           String
+	assignmentId        String
+
+	@@unique([assignmentId, userEmail])
+	@@index([assignmentId, userEmail])
+}
+
+model TestCase {
+	id                  String              @id @default(cuid())
+	assignment          Assignment          @relation(fields: [assignmentId], references: [id])
+	cmdFormat           String
+	solution            String
+	runs                RunCase[]
+
+	assignmentId        String
+}
+
+model RunCase {
+	cmd                 String              @unique
+	stdout              String
+	success             Boolean
+	lastRun             DateTime            @default(now())
+	testCase            TestCase            @relation(fields: [testCaseId], references: [id])
+
+	testCaseId          String
+}
+
+model Solution {
+	fileName            String              @id @default(cuid())
+	owner               User                @relation(fields: [ownerId], references: [email])
+	assignment          Assignment          @relation(fields: [assignmentId], references: [id])
+
+	ownerId             String
+	assignmentId        String
 }

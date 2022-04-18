@@ -17,6 +17,7 @@
 		"rangav.vscode-thunder-client",
 		"mohamed-nouri.websocket-client",
 		"naumovs.color-highlight",
+		"prisma.prisma",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
