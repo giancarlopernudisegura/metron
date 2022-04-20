@@ -10,48 +10,56 @@ datasource db {
 	url = env("DATABASE_URL")
 }
 
-model Class {
+model Course {
 	id                  String              @id @default(cuid())
 	name                String              @unique @default("")
 	assignments         Assignment[]
+	teachingStaff       TeachingStaff[]
+	students            Student[]
 
 	@@index(name)
 }
 
 model User {
 	email               String              @id
-	isTA                Boolean             @default(false)
-	assignments         Assignment[]
-	TA                  TeachingAssistant[]
+	isAdmin             Boolean             @default(false)
+	assignmentsEnrolled Student[]
+	assignmentsAssigned TeachingStaff[]
 	solutions           Solution[]
 }
 
 model Assignment {
 	id                  String              @id @default(cuid())
-	course              Class               @relation(fields: [courseId], references: [id])
+	course              Course              @relation(fields: [courseId], references: [id])
 	name                String
 	description         String
-	instructor          User                @relation(fields: [instructorEmail], references: [email])
 	dateDue             DateTime            @default(now())
-	TAEmails            TeachingAssistant[]
 	testCases           TestCase[]
 	solutions           Solution[]
 
 	courseId            String
-	instructorEmail     String
-
-	@@index(instructorEmail)
 }
 
-model TeachingAssistant {
-	user                User                @relation(fields: [userEmail], references: [email])
-	assignment          Assignment          @relation(fields: [assignmentId], references: [id])
+model TeachingStaff {
+	user                User               @relation(fields: [userEmail], references: [email])
+	course              Course             @relation(fields: [courseId], references: [id])
 
 	userEmail           String
-	assignmentId        String
+	courseId            String
 
-	@@unique([assignmentId, userEmail])
-	@@index([assignmentId, userEmail])
+	@@unique([courseId, userEmail])
+	@@index([courseId, userEmail])
+}
+
+model Student {
+	user                User               @relation(fields: [userEmail], references: [email])
+	course              Course             @relation(fields: [courseId], references: [id])
+
+	userEmail           String
+	courseId            String
+
+	@@unique([courseId, userEmail])
+	@@index([courseId, userEmail])
 }
 
 model TestCase {

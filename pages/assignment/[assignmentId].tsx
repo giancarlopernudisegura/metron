@@ -1,28 +1,16 @@
-import { UserProfile, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { getSession, UserProfile, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import Page from '@components/Page'
-import { Box, Button, Card, Divider, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material'
 import { Assignment } from '@prisma/client'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 
 interface PageProps {
 	user: UserProfile
+	assignment: Assignment
 }
 
-const AssignmentPage: NextPage<PageProps> = ({ user }: PageProps) => {
-	const router = useRouter()
-	const [assignment, setAssignment] = useState<Assignment | null>(null)
-	const { assignmentId } = router.query
-	useEffect(() => {
-		fetch(`/api/data/assignments/${assignmentId}`)
-			.then(res => res.json())
-			.then(data => {
-				const assignment = data as Assignment
-				setAssignment(assignment)
-			})
-	}, [])
+const AssignmentPage: NextPage<PageProps> = ({ user, assignment }: PageProps) => {
 	return <>
 		<Head>
 			<title>Metron</title>
@@ -31,10 +19,10 @@ const AssignmentPage: NextPage<PageProps> = ({ user }: PageProps) => {
 		<Page user={user}>
 			<Card>
 				<Box padding={2}>
-					<Typography variant='h4'>{assignment?.name || <Skeleton />}</Typography>
-					<Typography variant='h6'>{assignment ? `Due: ${assignment?.dateDue.toString()}` : <Skeleton />}</Typography>
+					<Typography variant='h4'>{assignment.name}</Typography>
+					<Typography variant='h6'>{`Due: ${assignment.dateDue.toString()}`}</Typography>
 					<Divider variant="middle" />
-					<Typography variant='body1'>{assignment?.description || <Skeleton />}</Typography>
+					<Typography variant='body1'>{assignment.description}</Typography>
 					<Stack direction='row' justifyContent='flex-end' spacing={1}>
 						<Button variant='outlined'>Submit a test case</Button>
 						<Button variant='contained'>Run a solution</Button>
@@ -47,4 +35,18 @@ const AssignmentPage: NextPage<PageProps> = ({ user }: PageProps) => {
 
 export default AssignmentPage
 
-export const getServerSideProps = withPageAuthRequired()
+export const getServerSideProps = withPageAuthRequired({
+	async getServerSideProps({req, res, query}) {
+		const { assignmentId } = query
+		const session = getSession(req, res)
+		const response = await fetch(`http://${req.headers.host}/api/data/assignments/${assignmentId}`, {
+			headers: {
+				cookie: req.headers.cookie
+			}
+		})
+		if (!response.ok)
+			return { notFound: true }
+		const assignment = await response.json() as Assignment
+		return { props: { assignment } }
+	}
+})

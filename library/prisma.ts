@@ -17,6 +17,6 @@ export class User {
 
 	public static async instance(email: string) {
 		const user = await Prisma.client.user.findFirst({ where: { email: { equals: email } } })
-		return user ? user : Prisma.client.user.create({ data: { email, isTA: false } })
+		return user ? user : Prisma.client.user.create({ data: { email, isAdmin: false } })
 	}
 }

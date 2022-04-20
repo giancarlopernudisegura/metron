@@ -36,14 +36,14 @@ const NavBar = ({user, router}: PageProps) => {
 
 	return <AppBar position="static">
 		<Toolbar>
-			<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+			<Box sx={{ flexGrow: 1, display: 'flex' }}>
 				<Link href="/" passHref>
 					<Typography variant="h6" color="inherit" component="div" sx={{cursor: 'pointer'}}>
 						Metron
 					</Typography>
 				</Link>
 			</Box>
-			<Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
+			<Box sx={{ flexGrow: 0, display: 'flex' }}>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 					<Avatar alt="Remy Sharp" src={user.picture || ""} />
 				</IconButton>
