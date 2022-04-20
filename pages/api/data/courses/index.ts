@@ -1,5 +1,5 @@
 import Prisma from '@library/prisma'
-import { Course } from '.prisma/client/index'
+import { Course } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 

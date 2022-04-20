@@ -36,9 +36,8 @@ const AssignmentPage: NextPage<PageProps> = ({ user, assignment }: PageProps) =>
 export default AssignmentPage
 
 export const getServerSideProps = withPageAuthRequired({
-	async getServerSideProps({req, res, query}) {
+	async getServerSideProps({req, query}) {
 		const { assignmentId } = query
-		const session = getSession(req, res)
 		const response = await fetch(`http://${req.headers.host}/api/data/assignments/${assignmentId}`, {
 			headers: {
 				cookie: req.headers.cookie

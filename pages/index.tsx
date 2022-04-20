@@ -2,11 +2,12 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { withPageAuthRequired, UserProfile } from '@auth0/nextjs-auth0'
 import Page from '@components/Page'
-import AssignmentCard from '@components/AssignmentsCard'
+import AssignmentsCard from '@components/AssignmentsCard'
 import { useEffect, useState } from 'react'
-import { Assignment } from '@prisma/client'
+import { Assignment, Course, User } from '@prisma/client'
 import CreateFab from '@components/CreateFab'
-import { Alert, Snackbar } from '@mui/material'
+import { Alert, Snackbar, Stack } from '@mui/material'
+import CoursesCard from '@components/CoursesCard'
 
 interface PageProps {
 	user: UserProfile
@@ -14,12 +15,18 @@ interface PageProps {
 
 const Home: NextPage<PageProps> = ({ user }: PageProps) => {
 	const [assignments, setAssignments] = useState<Assignment[]>([])
+	const [courses, setCourses] = useState<Course[]>([])
+	const [isAdmin, setIsAdmin] = useState(false)
 	const [error, setError] = useState('')
 	const closeError = () => setError('')
 
-	// fetch to trigger a user row creation on the db
-	fetch('/api/data/user')
 	useEffect(() => {
+		fetch('/api/data/user')
+			.then(res => res.json())
+			.then(data => {
+				const u = data.user as User
+				setIsAdmin(u.isAdmin)
+			})
 		fetch('/api/data/assignments')
 			.then(res => res.json())
 			.then(data => {
@@ -27,6 +34,17 @@ const Home: NextPage<PageProps> = ({ user }: PageProps) => {
 				setAssignments(assignments)
 			})
 	}, [])
+	useEffect(() => {
+		if (isAdmin) {
+			fetch('/api/data/courses')
+				.then(res => res.json())
+				.then(data => {
+					const courses = data.courses as Course[]
+					setCourses(courses)
+				})
+			console.log(isAdmin)
+		}
+	}, [isAdmin])
 	return <>
 		<Head>
 			<title>Metron</title>
@@ -36,7 +54,10 @@ const Home: NextPage<PageProps> = ({ user }: PageProps) => {
 			<Snackbar open={error.length > 0} autoHideDuration={5000} onClose={closeError}>
 				<Alert severity='error' sx={{ marginBottom: 2 }} onClose={closeError}>{error}</Alert>
 			</Snackbar>
-			<AssignmentCard assignments={assignments} />
+			<Stack spacing={2}>
+				<AssignmentsCard assignments={assignments} />
+				{isAdmin && <CoursesCard courses={courses} />}
+			</Stack>
 			<CreateFab setError={setError} />
 		</Page>
 	</>
