@@ -45,7 +45,7 @@ const NavBar = ({user, router}: PageProps) => {
 			</Box>
 			<Box sx={{ flexGrow: 0, display: 'flex' }}>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-					<Avatar alt="Remy Sharp" src={user.picture || ""} />
+					<Avatar alt={user.name?.toString()} src={user.picture || ""} />
 				</IconButton>
 				<Menu
 					sx={{ mt: '45px' }}

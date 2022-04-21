@@ -1,4 +1,4 @@
-import { Student } from '@prisma/client'
+import { TeachingStaff } from '@prisma/client'
 import { GridColDef, GridSelectionModel } from '@mui/x-data-grid'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -6,46 +6,46 @@ import { validate as validateEmail } from 'isemail'
 import UserTable from '@components/UserTable'
 
 interface ComponentProps {
-	students: Student[]
+	staff: TeachingStaff[]
 }
 
 const columns: GridColDef[] = [
 	{
 		field: 'id',
 		headerName: 'Email',
-		description: 'The email corresponding to the student',
+		description: 'The email corresponding to the teaching staff member',
 		flex: 1
 	}
 ]
 
 const rowsPerPageOptions = [10, 25, 50, 100, 300]
 
-const transformStudentsList = (students: Student[]) => {
-	return students.map(({userEmail}) => ({
+const transformStaffList = (staff: TeachingStaff[]) => {
+	return staff.map(({userEmail}) => ({
 		id: userEmail
 	}))
 }
 
-const StudentsTable = ({ students }: ComponentProps) => {
+const TeachingStaffTable = ({ staff }: ComponentProps) => {
 	const [selection, setSelection] = useState<GridSelectionModel>([])
 	const [emailsText, setEmailsText] = useState<string>('')
 	const router = useRouter()
 	const { courseId } = router.query
-	const removeStudents = async () => {
-		await fetch(`/api/data/courses/${courseId}/students`, {
+	const removeStaff = async () => {
+		await fetch(`/api/data/courses/${courseId}/staff`, {
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			method: 'DELETE',
-			body: JSON.stringify({ students: selection })
+			body: JSON.stringify({ teachingstaff: selection })
 		})
 		router.reload()
 	}
-	const bulkAddStudents = async () => {
+	const bulkAddStaff = async () => {
 		const emails = emailsText.split(',')
 			.map(e => e.trim())
 			.filter(validateEmail)
-		await fetch(`/api/data/courses/${courseId}/students`, {
+		await fetch(`/api/data/courses/${courseId}/staff`, {
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -56,15 +56,15 @@ const StudentsTable = ({ students }: ComponentProps) => {
 	}
 
 	return <UserTable
-		rows={transformStudentsList(students)}
+		rows={transformStaffList(staff)}
 		columns={columns}
 		rowsPerPageOptions={rowsPerPageOptions}
-		type='student'
-		addAction={bulkAddStudents}
-		removeAction={removeStudents}
+		type='teaching staff member'
+		addAction={bulkAddStaff}
+		removeAction={removeStaff}
 		selectionState={[selection, setSelection]}
 		emailTextState={[emailsText, setEmailsText]}
 	/>
 }
 
-export default StudentsTable
+export default TeachingStaffTable

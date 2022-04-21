@@ -18,7 +18,8 @@ export default withApiAuthRequired(async function handler(
 		},
 		include: {
 			students: true,
-			assignments: true
+			assignments: true,
+			teachingStaff: true
 		}
 	})
 	if (course)
