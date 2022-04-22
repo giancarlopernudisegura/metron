@@ -1,6 +1,8 @@
 # Contributing to Metron
 Contributions are welcome. Read the following document for information pertaining to contributions and how to get started.
 
+If you want to get more familiar with the code base, check out [the wiki](https://github.com/giancarlopernudisegura/metron/wiki).
+
 ## Setting up local environment
 The easiest way to get your local environment up and running is to use [the dev container](.devcontainer/devcontainer.json) included in the repo. This will require having docker installed on your machine. This will setup your vscode with the extensions needed and will also create a PostgreSQL instance for you.
 
