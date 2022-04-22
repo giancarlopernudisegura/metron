@@ -1,3 +1,22 @@
 {
-	"extends": "next/core-web-vitals"
+	"extends": "next/core-web-vitals",
+	"rules": {
+		"eqeqeq": "error",
+		"curly": ["error", "all"],
+		"quotes": ["warn", "single"],
+		"no-dupe-args": "error",
+		"no-dupe-else-if": "error",
+		"no-empty-pattern": "error",
+		"block-scoped-var": "error",
+		"camelcase": "error",
+		"default-case-last": "error",
+		"no-console": "warn",
+		"no-eval": "error",
+		"no-extra-boolean-cast": "warn",
+		"indent": ["error", "tab"],
+		"object-curly-spacing": ["error", "always"],
+		"no-useless-rename": "error",
+		"no-useless-return":  "error",
+		"oel-last": ["error", "always"]
+	}
 }

@@ -67,7 +67,7 @@ const UsersTable = ({ rows, columns, rowsPerPageOptions = [10, 25, 50, 100, 300]
 					required
 					label={`${typeCapitalized} Email`}
 					value={emailsText}
-					onChange={({target: {value}})  => setEmailsText(value)}
+					onChange={({ target: { value } })  => setEmailsText(value)}
 					multiline
 					maxRows={10}
 				/>

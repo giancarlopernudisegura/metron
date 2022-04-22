@@ -1,4 +1,4 @@
-import Prisma from '@library/prisma'
+import Prisma from '@lib/prisma'
 import { Assignment } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
@@ -13,8 +13,9 @@ export default withApiAuthRequired(async function handler(
 ) {
 	const { assignmentId } = req.query
 	const assignment = await Prisma.client.assignment.findFirst({ where: { id: { equals: assignmentId.toString() } } })
-	if (assignment)
+	if (assignment) {
 		res.status(200).json(assignment)
-	else
-		res.status(404).json({ message: 'Assignment not found.'})
+	} else {
+		res.status(404).json({ message: 'Assignment not found.' })
+	}
 })

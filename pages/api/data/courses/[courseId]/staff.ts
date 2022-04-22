@@ -1,4 +1,4 @@
-import Prisma from '@library/prisma'
+import Prisma from '@lib/prisma'
 import { TeachingStaff } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
@@ -26,41 +26,41 @@ export default withApiAuthRequired(async function handler(
 		return
 	}
 	switch (req.method) {
-		case 'GET':
-			const teachingstaff = await Prisma.client.teachingStaff.findMany({
-				where: {
-					courseId: { equals: course.id }
-				}
-			})
-			res.status(200).json({ teachingstaff })
-			break
-		case 'POST':
-			const emails = req.body.emails as string[]
-			const existingUsers = (await Prisma.client.user.findMany())
-				.map(user => user.email)
-			const emailsToAdd = emails
-				.filter(email => existingUsers.includes(email))
-				.map(email => ({
-					userEmail: email,
-					courseId: course.id
-				}))
-			await Prisma.client.teachingStaff.createMany({
-				data: emailsToAdd,
-				skipDuplicates: true
-			})
-			res.status(200).end()
-			break
-		case 'DELETE':
-			const staffToRemove = req.body.teachingstaff as string[]
-			await Prisma.client.teachingStaff.deleteMany({
-				where: {
-					courseId: { equals: course.id },
-					userEmail: { in: staffToRemove }
-				}
-			})
-			res.status(200).end()
-			break
-		default:
-			res.status(405).end()
+	case 'GET':
+		const teachingstaff = await Prisma.client.teachingStaff.findMany({
+			where: {
+				courseId: { equals: course.id }
+			}
+		})
+		res.status(200).json({ teachingstaff })
+		break
+	case 'POST':
+		const emails = req.body.emails as string[]
+		const existingUsers = (await Prisma.client.user.findMany())
+			.map(user => user.email)
+		const emailsToAdd = emails
+			.filter(email => existingUsers.includes(email))
+			.map(email => ({
+				userEmail: email,
+				courseId: course.id
+			}))
+		await Prisma.client.teachingStaff.createMany({
+			data: emailsToAdd,
+			skipDuplicates: true
+		})
+		res.status(200).end()
+		break
+	case 'DELETE':
+		const staffToRemove = req.body.teachingstaff as string[]
+		await Prisma.client.teachingStaff.deleteMany({
+			where: {
+				courseId: { equals: course.id },
+				userEmail: { in: staffToRemove }
+			}
+		})
+		res.status(200).end()
+		break
+	default:
+		res.status(405).end()
 	}
 })

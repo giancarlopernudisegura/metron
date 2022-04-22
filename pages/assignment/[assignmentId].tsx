@@ -1,4 +1,4 @@
-import { getSession, UserProfile, withPageAuthRequired } from '@auth0/nextjs-auth0'
+import { UserProfile, withPageAuthRequired } from '@auth0/nextjs-auth0'
 import Page from '@components/Page'
 import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material'
 import { Assignment } from '@prisma/client'
@@ -36,15 +36,16 @@ const AssignmentPage: NextPage<PageProps> = ({ user, assignment }: PageProps) =>
 export default AssignmentPage
 
 export const getServerSideProps = withPageAuthRequired({
-	async getServerSideProps({req, query}) {
+	async getServerSideProps({ req, query }) {
 		const { assignmentId } = query
 		const response = await fetch(`http://${req.headers.host}/api/data/assignments/${assignmentId}`, {
 			headers: {
 				cookie: req.headers.cookie
 			}
 		})
-		if (!response.ok)
+		if (!response.ok) {
 			return { notFound: true }
+		}
 		const assignment = await response.json() as Assignment
 		return { props: { assignment } }
 	}

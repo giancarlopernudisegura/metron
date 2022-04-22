@@ -1,4 +1,4 @@
-import Prisma, {User} from '@library/prisma'
+import Prisma, { User } from '@lib/prisma'
 import { User as UserType } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0'

@@ -47,7 +47,7 @@ const CoursePage: NextPage<PageProps> = ({ user, course }: PageProps) => {
 export default CoursePage
 
 export const getServerSideProps = withPageAuthRequired({
-	async getServerSideProps({req, res, query}) {
+	async getServerSideProps({ req, res, query }) {
 		const { courseId } = query
 		const session = getSession(req, res)
 		const user = session?.user
@@ -56,12 +56,14 @@ export const getServerSideProps = withPageAuthRequired({
 				cookie: req.headers.cookie || '',
 			}
 		})
-		if (!response.ok)
+		if (!response.ok) {
 			return { notFound: true }
+		}
 		const course = await response.json() as Course & CourseExtended
 		const isCourseStaff = course.teachingStaff.find(s => s.courseId === course.id && s.userEmail === user?.email)
-		if (!isCourseStaff)
+		if (!isCourseStaff) {
 			return { notFound: true }
+		}
 		return { props: { course } }
 	}
 })

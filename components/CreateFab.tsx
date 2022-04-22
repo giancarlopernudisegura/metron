@@ -35,10 +35,11 @@ const FabGroup = ({ setError } : ComponentProps) => {
 			})
 		})
 		if (!response.ok) {
-			if (response.status === 409)
+			if (response.status === 409) {
 				setError('This course already exists. Please use a different name.')
-			else
+			} else {
 				setError('An error occured. Please try again later.')
+			}
 		} else {
 			setCourseNames(courseNames.concat([courseName]))
 			setCourseName('')
@@ -58,10 +59,11 @@ const FabGroup = ({ setError } : ComponentProps) => {
 			})
 		})
 		if (!response.ok) {
-			if (response.status === 409)
+			if (response.status === 409) {
 				setError('This assignment already exists. Please use a different name.')
-			else
-				setError(response.body.error || 'An error occured. Please try again later.')
+			} else {
+				setError(response.body?.error || 'An error occured. Please try again later.')
+			}
 		} else {
 			router.reload()
 		}
@@ -128,7 +130,7 @@ const FabGroup = ({ setError } : ComponentProps) => {
 		<Dialog maxWidth='sm' fullWidth open={showCourseForm} onClose={closeCourseForm}>
 			<DialogTitle>New course</DialogTitle>
 			<DialogContent>
-				<DialogContentText sx={{marginBottom: 2}}>Create a new course.</DialogContentText>
+				<DialogContentText sx={{ marginBottom: 2 }}>Create a new course.</DialogContentText>
 				<TextField fullWidth required aria-required label='Name' value={courseName} onChange={e => setCourseName(e.target.value)} />
 				<DialogActions>
 					<Button onClick={() => { closeCourseForm(); setCourseName('') }}>Cancel</Button>
@@ -144,9 +146,8 @@ const FabGroup = ({ setError } : ComponentProps) => {
 					<Autocomplete
 						aria-required
 						onChange={({ target }) => {
-							if (courseNames[target.value])
-								setAssignmentCourseName(courseNames[target.value])
-							else
+							courseNames[target.value] ?
+								setAssignmentCourseName(courseNames[target.value]) :
 								setAssignmentCourseName('')
 						}}
 						options={courseNames}

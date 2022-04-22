@@ -1,4 +1,4 @@
-import Prisma from '@library/prisma'
+import Prisma from '@lib/prisma'
 import { Course } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
@@ -22,8 +22,9 @@ export default withApiAuthRequired(async function handler(
 			teachingStaff: true
 		}
 	})
-	if (course)
+	if (course) {
 		res.status(200).json(course)
-	else
-		res.status(404).json({ message: 'Course not found.'})
+	} else {
+		res.status(404).json({ message: 'Course not found.' })
+	}
 })

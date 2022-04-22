@@ -6,8 +6,9 @@ export default class Prisma {
 	private constructor() { }
 	
 	public static get client() {
-		if (!Prisma._client)
+		if (!Prisma._client) {
 			Prisma._client = new PrismaClient()
+		}
 		return Prisma._client
 	}
 }

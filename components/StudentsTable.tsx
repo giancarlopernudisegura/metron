@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
 const rowsPerPageOptions = [10, 25, 50, 100, 300]
 
 const transformStudentsList = (students: Student[]) => {
-	return students.map(({userEmail}) => ({
+	return students.map(({ userEmail }) => ({
 		id: userEmail
 	}))
 }

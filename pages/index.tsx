@@ -42,7 +42,6 @@ const Home: NextPage<PageProps> = ({ user }: PageProps) => {
 					const courses = data.courses as Course[]
 					setCourses(courses)
 				})
-			console.log(isAdmin)
 		}
 	}, [isAdmin])
 	return <>

@@ -9,7 +9,7 @@ interface PageProps {
 	router: NextRouter
 }
 
-const NavBar = ({user, router}: PageProps) => {
+const NavBar = ({ user, router }: PageProps) => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -30,26 +30,26 @@ const NavBar = ({user, router}: PageProps) => {
 	};
 
 	const logout = async () => {
-		// await fetch("/api/auth/logout")
+		// await fetch('/api/auth/logout')
 		// router.reload()
 	}
 
-	return <AppBar position="static">
+	return <AppBar position='static'>
 		<Toolbar>
 			<Box sx={{ flexGrow: 1, display: 'flex' }}>
-				<Link href="/" passHref>
-					<Typography variant="h6" color="inherit" component="div" sx={{cursor: 'pointer'}}>
+				<Link href='/' passHref>
+					<Typography variant='h6' color='inherit' component='div' sx={{ cursor: 'pointer' }}>
 						Metron
 					</Typography>
 				</Link>
 			</Box>
 			<Box sx={{ flexGrow: 0, display: 'flex' }}>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-					<Avatar alt={user.name?.toString()} src={user.picture || ""} />
+					<Avatar alt={user.name?.toString()} src={user.picture || ''} />
 				</IconButton>
 				<Menu
 					sx={{ mt: '45px' }}
-					id="menu-appbar"
+					id='menu-appbar'
 					anchorEl={anchorElUser}
 					anchorOrigin={{
 						vertical: 'top',
@@ -64,7 +64,7 @@ const NavBar = ({user, router}: PageProps) => {
 					onClose={handleCloseUserMenu}
 				>
 					<MenuItem onClick={handleCloseUserMenu}>
-						<Typography textAlign="center" onClick={logout}>Logout</Typography>
+						<Typography textAlign='center' onClick={logout}>Logout</Typography>
 					</MenuItem>
 				</Menu>
 			</Box>
