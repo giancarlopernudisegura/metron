@@ -1,4 +1,7 @@
 # Metron
+[![GPL-3.0 license](https://img.shields.io/github/license/giancarlopernudisegura/metron)](https://github.com/giancarlopernudisegura/metron/blob/master/LICENSE)
+[![Node Version](https://img.shields.io/node/v/next)](https://nodejs.org/en/download/)
+
 A test case aggregator.
 
 ## Description
